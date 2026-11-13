@@ -135,6 +135,27 @@
   .card .go span{transition:margin-left .3s}
   .card:hover .go span{margin-left:8px}
 
+  /* ---------- mask ---------- */
+  .mask-wrap{text-align:center;padding:8px 0 4px}
+  .mask{width:120px;height:150px;filter:drop-shadow(0 0 18px rgba(217,123,43,.25));animation:maskfloat 6s ease-in-out infinite}
+  @keyframes maskfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .motto{
+    margin-top:26px;font-family:var(--mono);font-size:13px;
+    letter-spacing:.18em;line-height:2.1;color:var(--ink);text-transform:uppercase;
+  }
+  .motto .amber{color:var(--amber)}
+  .mask-quote{
+    margin-top:24px;font-style:italic;font-size:22px;line-height:1.6;color:var(--dim);
+  }
+  .mask-quote-src{
+    margin-top:10px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.26em;color:var(--faint);text-transform:uppercase;
+  }
+  .nov5{
+    margin-top:22px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.3em;color:var(--amber);text-transform:uppercase;
+  }
+
   /* ---------- quotes ---------- */
   .quote-box{min-height:132px;text-align:center;padding:12px 0 4px}
   #quote{
@@ -246,7 +267,37 @@
   </section>
 
   <section>
-    <div class="label"><b>03</b> &nbsp;/&nbsp; Words in the dark</div>
+    <div class="label"><b>03</b> &nbsp;/&nbsp; The mask</div>
+    <div class="mask-wrap">
+      <!-- Guy Fawkes — line-art mask -->
+      <svg class="mask" viewBox="0 0 120 150" fill="none" aria-hidden="true">
+        <path d="M60 8 C88 8 106 32 106 64 C106 100 84 138 60 142 C36 138 14 100 14 64 C14 32 32 8 60 8 Z" stroke="#e8e4d8" stroke-width="1.5"/>
+        <path d="M28 56 Q40 44 54 54" stroke="#e8e4d8" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M66 54 Q80 44 92 56" stroke="#e8e4d8" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M30 68 Q40 60 50 68 Q40 74 30 68 Z" fill="#d97b2b"/>
+        <path d="M70 68 Q80 60 90 68 Q80 74 70 68 Z" fill="#d97b2b"/>
+        <path d="M60 72 L57 88 L63 88" stroke="#e8e4d8" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="30" cy="92" r="5" fill="#d97b2b" opacity=".4"/>
+        <circle cx="90" cy="92" r="5" fill="#d97b2b" opacity=".4"/>
+        <path d="M28 100 Q40 92 52 100 Q60 106 68 100 Q80 92 92 100" stroke="#e8e4d8" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M36 106 Q60 122 84 106" stroke="#e8e4d8" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M54 116 L60 132 L66 116 Q60 121 54 116 Z" fill="#e8e4d8"/>
+      </svg>
+      <div class="motto">
+        We are Anonymous.<br>
+        We are Legion.<br>
+        We do not forgive.<br>
+        We do not forget.<br>
+        <span class="amber">Expect us.</span>
+      </div>
+      <div class="mask-quote">“Behind this mask there is more than flesh. Behind this mask there is an idea — and ideas are bulletproof.”</div>
+      <div class="mask-quote-src">— V, V for Vendetta</div>
+      <div class="nov5">Remember, remember the fifth of November</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label"><b>04</b> &nbsp;/&nbsp; Words in the dark</div>
     <div class="quote-box" id="quote-box">
       <div id="quote">“The fox knows many things, but the hedgehog knows one big thing.”</div>
       <div id="quote-src">— Archilochus</div>
@@ -254,7 +305,7 @@
   </section>
 
   <section class="signal" id="signal">
-    <div class="label"><b>04</b> &nbsp;/&nbsp; Make contact</div>
+    <div class="label"><b>05</b> &nbsp;/&nbsp; Make contact</div>
     <a class="big" href="https://t.me/Mehrab1381pok" target="_blank" rel="noopener">@Mehrab1381pok</a>
     <p>One address. No noise. If you know, you know.</p>
     <div class="links">
@@ -267,7 +318,7 @@
   <footer>
     <div>MEHRAB.NX.KG <span class="amber">—</span> NO COOKIES <span class="amber">·</span> NO TRACKING <span class="amber">·</span> JUST SIGNAL</div>
     <div class="coords">35.6892° N, 51.3890° E — more or less</div>
-    <div>© MMXXVI — The fox was here.</div>
+    <div>© MMXXVI — The fox was here. <span class="amber">Expect us.</span></div>
   </footer>
 
 </div>
@@ -279,6 +330,7 @@
     "I build in the dark. The work speaks in the light.",
     "Not all doors are meant to be knocked on.",
     "In a world of noise, be the signal.",
+    "Remember, remember the fifth of November.",
     "What is hidden is not gone. It is only waiting."
   ];
   const typedEl = document.getElementById('typed');
@@ -306,6 +358,8 @@
     {t:"“We are all in the gutter, but some of us are looking at the stars.”", s:"— Oscar Wilde"},
     {t:"“What is hidden is not gone. It is only waiting.”", s:"— Field notes"},
     {t:"“The cunning fox is never caught twice in the same snare.”", s:"— Old proverb"},
+    {t:"“People should not be afraid of their governments. Governments should be afraid of their people.”", s:"— V for Vendetta"},
+    {t:"“Remember, remember the fifth of November.”", s:"— V for Vendetta"},
     {t:"“I build in the dark. The work speaks in the light.”", s:"— Mehrab"}
   ];
   const box = document.getElementById('quote-box');
