@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEHRAB — Signal in the Dark</title>
+<meta name="description" content="You weren't supposed to find this page. Mehrab — builder, watcher of gifts, keeper of quiet tools.">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230a0a0b'/%3E%3Cpath d='M32 12 L50 30 L40 52 L24 52 L14 30 Z' fill='none' stroke='%23d97b2b' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23d97b2b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0b;
+    --bg2:#101012;
+    --ink:#e8e4d8;
+    --dim:#9a958a;
+    --faint:#5c584f;
+    --amber:#d97b2b;
+    --amber-soft:rgba(217,123,43,.14);
+    --line:rgba(232,228,216,.12);
+    --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:19px;
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--amber);color:#0a0a0b}
+
+  /* film grain */
+  body::after{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;z-index:50;
+    opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  }
+  #embers{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+  .wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 24px}
+
+  /* ---------- top bar ---------- */
+  header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:28px 0 0;
+    font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+    color:var(--faint);text-transform:uppercase;
+  }
+  header .dot{color:var(--amber)}
+  header a{color:var(--faint);text-decoration:none}
+  header a:hover{color:var(--amber)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:84px 0 64px;text-align:center}
+  .fox{width:92px;height:92px;margin:0 auto 28px;opacity:.92}
+  .fox path,.fox circle{stroke-dasharray:400;stroke-dashoffset:400;animation:draw 2.4s ease forwards}
+  .fox circle{animation-delay:1.6s}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .hero .kicker{
+    font-family:var(--mono);font-size:11px;letter-spacing:.34em;
+    color:var(--amber);text-transform:uppercase;margin-bottom:18px;
+  }
+  h1{
+    font-size:clamp(56px,14vw,104px);
+    font-weight:500;letter-spacing:.14em;line-height:1;
+    text-indent:.14em;
+  }
+  h1 em{font-style:italic;font-weight:400;color:var(--dim)}
+  .type-line{
+    margin-top:26px;min-height:1.7em;
+    font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--dim);
+  }
+  .caret{display:inline-block;width:8px;height:15px;background:var(--amber);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .scroll-hint{
+    margin-top:64px;font-family:var(--mono);font-size:10px;
+    letter-spacing:.3em;color:var(--faint);text-transform:uppercase;
+  }
+  .scroll-hint span{display:block;margin-top:10px;color:var(--amber);animation:drift 2.2s ease-in-out infinite}
+  @keyframes drift{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(6px);opacity:1}}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0;border-top:1px solid var(--line)}
+  .label{
+    font-family:var(--mono);font-size:11px;letter-spacing:.3em;
+    color:var(--faint);text-transform:uppercase;margin-bottom:28px;
+  }
+  .label b{color:var(--amber);font-weight:500}
+
+  .about p{font-size:22px;line-height:1.75;color:var(--ink)}
+  .about p + p{margin-top:16px;color:var(--dim);font-size:19px}
+  .redact{
+    background:var(--ink);color:var(--ink);
+    padding:0 6px;border-radius:2px;cursor:help;
+    transition:color .4s,background .4s;user-select:none;
+  }
+  .redact:hover,.redact:active{background:transparent;color:var(--amber)}
+
+  /* ---------- dossier cards ---------- */
+  .card{
+    display:block;text-decoration:none;color:inherit;
+    border:1px solid var(--line);border-radius:4px;
+    padding:26px 26px 22px;margin-bottom:18px;
+    background:linear-gradient(180deg,var(--bg2),transparent);
+    transition:border-color .35s,transform .35s;
+    position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;top:0;left:0;bottom:0;width:2px;
+    background:var(--amber);opacity:0;transition:opacity .35s;
+  }
+  .card:hover{border-color:rgba(217,123,43,.5);transform:translateY(-2px)}
+  .card:hover::before{opacity:1}
+  .card .meta{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-family:var(--mono);font-size:10px;letter-spacing:.24em;
+    color:var(--faint);text-transform:uppercase;margin-bottom:12px;
+  }
+  .card .meta .st{color:var(--amber)}
+  .card h3{font-size:30px;font-weight:500;letter-spacing:.02em;line-height:1.15}
+  .card p{margin-top:8px;color:var(--dim);font-size:18px;line-height:1.6}
+  .card .go{
+    margin-top:16px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.22em;color:var(--amber);text-transform:uppercase;
+  }
+  .card .go span{transition:margin-left .3s}
+  .card:hover .go span{margin-left:8px}
+
+  /* ---------- quotes ---------- */
+  .quote-box{min-height:132px;text-align:center;padding:12px 0 4px}
+  #quote{
+    font-size:clamp(24px,6vw,32px);font-style:italic;line-height:1.5;
+    transition:opacity .6s;
+  }
+  #quote-src{
+    margin-top:14px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.26em;color:var(--faint);text-transform:uppercase;
+    transition:opacity .6s;
+  }
+  .quote-box.fading #quote,.quote-box.fading #quote-src{opacity:0}
+
+  /* ---------- signal / contact ---------- */
+  .signal{text-align:center}
+  .signal .big{
+    display:inline-block;text-decoration:none;
+    font-size:clamp(28px,7vw,40px);font-weight:500;letter-spacing:.04em;
+    color:var(--ink);border-bottom:1px solid var(--amber);
+    padding-bottom:4px;transition:color .3s;
+  }
+  .signal .big:hover{color:var(--amber)}
+  .signal p{margin-top:14px;color:var(--dim);font-size:18px}
+  .links{
+    display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+    margin-top:34px;
+  }
+  .links a{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    color:var(--dim);text-decoration:none;text-transform:uppercase;
+    border:1px solid var(--line);border-radius:100px;
+    padding:10px 20px;transition:all .3s;
+  }
+  .links a:hover{color:var(--ink);border-color:var(--amber);background:var(--amber-soft)}
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:48px 0 56px;border-top:1px solid var(--line);
+    text-align:center;font-family:var(--mono);font-size:10px;
+    letter-spacing:.26em;color:var(--faint);text-transform:uppercase;line-height:2.1;
+  }
+  footer .amber{color:var(--amber)}
+  .coords{letter-spacing:.14em;text-transform:none}
+
+  @media (max-width:520px){
+    .hero{padding:64px 0 48px}
+    section{padding:44px 0}
+    .card{padding:22px 20px 18px}
+    .about p{font-size:20px}
+  }
+</style>
+</head>
+<body>
+<canvas id="embers"></canvas>
+
+<div class="wrap">
+
+  <header>
+    <span>MEHRAB<span class="dot">.</span>NX<span class="dot">.</span>KG</span>
+    <a href="#signal">EST. MMXXVI</a>
+  </header>
+
+  <div class="hero">
+    <!-- geometric fox -->
+    <svg class="fox" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <path d="M50 8 L86 34 L74 88 L26 88 L14 34 Z" stroke="#d97b2b" stroke-width="1.5"/>
+      <path d="M50 8 L50 52 M14 34 L50 52 L86 34 M26 88 L50 52 L74 88" stroke="#e8e4d8" stroke-width="1" opacity=".35"/>
+      <circle cx="38" cy="46" r="2.5" fill="#d97b2b" stroke="none"/>
+      <circle cx="62" cy="46" r="2.5" fill="#d97b2b" stroke="none"/>
+    </svg>
+
+    <div class="kicker">Signal in the dark</div>
+    <h1>MEHRAB</h1>
+
+    <div class="type-line"><span id="typed"></span><span class="caret"></span></div>
+
+    <div class="scroll-hint">Scroll — if you dare<span>↓</span></div>
+  </div>
+
+  <section class="about">
+    <div class="label"><b>01</b> &nbsp;/&nbsp; Who is here</div>
+    <p>You weren't supposed to find this page. But since you're here — I build quiet tools in the dark, and let the work speak in the light.</p>
+    <p>Master's student. Builder of bots. Watcher of gifts. Somewhere between <span class="redact" title="hover to reveal">Tehran</span> and the internet, <span class="redact" title="hover to reveal">one commit at a time</span>.</p>
+  </section>
+
+  <section>
+    <div class="label"><b>02</b> &nbsp;/&nbsp; Transmissions — what I've built</div>
+
+    <a class="card" href="https://github.com/mehrab1381pok/telegram-web-proxy-cloudflare" target="_blank" rel="noopener">
+      <div class="meta"><span>File 001 — Open source</span><span class="st">● Live</span></div>
+      <h3>TG Web Proxy</h3>
+      <p>A one-click Telegram web proxy running on Cloudflare Workers. Free, private, yours to deploy. No servers. No traces.</p>
+      <div class="go">Open the repository <span>→</span></div>
+    </a>
+
+    <a class="card" href="https://t.me/Gift_upgraded" target="_blank" rel="noopener">
+      <div class="meta"><span>File 002 — Live bot</span><span class="st">● Watching</span></div>
+      <h3>Gift Upgrade Tracker</h3>
+      <p>A bot that watches all 124 upgradable Telegram gift collections, day and night — and speaks only when something truly rare appears. Black backdrops. Rarest models. Nothing else.</p>
+      <div class="go">Watch the channel <span>→</span></div>
+    </a>
+
+    <a class="card" href="https://github.com/mehrab1381pok" target="_blank" rel="noopener">
+      <div class="meta"><span>File 003 — Archive</span><span class="st">● Open</span></div>
+      <h3>The Workshop</h3>
+      <p>More bots, more tools, more experiments. Everything I've built with AI at my side — out in the open.</p>
+      <div class="go">Enter the workshop <span>→</span></div>
+    </a>
+  </section>
+
+  <section>
+    <div class="label"><b>03</b> &nbsp;/&nbsp; Words in the dark</div>
+    <div class="quote-box" id="quote-box">
+      <div id="quote">“The fox knows many things, but the hedgehog knows one big thing.”</div>
+      <div id="quote-src">— Archilochus</div>
+    </div>
+  </section>
+
+  <section class="signal" id="signal">
+    <div class="label"><b>04</b> &nbsp;/&nbsp; Make contact</div>
+    <a class="big" href="https://t.me/Mehrab1381pok" target="_blank" rel="noopener">@Mehrab1381pok</a>
+    <p>One address. No noise. If you know, you know.</p>
+    <div class="links">
+      <a href="https://t.me/Mehrab1381pok" target="_blank" rel="noopener">Telegram</a>
+      <a href="https://t.me/Gift_upgraded" target="_blank" rel="noopener">Gift Channel</a>
+      <a href="https://github.com/mehrab1381pok" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </section>
+
+  <footer>
+    <div>MEHRAB.NX.KG <span class="amber">—</span> NO COOKIES <span class="amber">·</span> NO TRACKING <span class="amber">·</span> JUST SIGNAL</div>
+    <div class="coords">35.6892° N, 51.3890° E — more or less</div>
+    <div>© MMXXVI — The fox was here.</div>
+  </footer>
+
+</div>
+
+<script>
+  // ---------- typewriter ----------
+  const lines = [
+    "You weren't supposed to find this page.",
+    "I build in the dark. The work speaks in the light.",
+    "Not all doors are meant to be knocked on.",
+    "In a world of noise, be the signal.",
+    "What is hidden is not gone. It is only waiting."
+  ];
+  const typedEl = document.getElementById('typed');
+  let li = 0, ci = 0, deleting = false;
+  function typeTick(){
+    const line = lines[li];
+    if(!deleting){
+      ci++;
+      typedEl.textContent = line.slice(0, ci);
+      if(ci === line.length){ deleting = true; return setTimeout(typeTick, 2600); }
+      return setTimeout(typeTick, 42 + Math.random()*50);
+    } else {
+      ci--;
+      typedEl.textContent = line.slice(0, ci);
+      if(ci === 0){ deleting = false; li = (li + 1) % lines.length; return setTimeout(typeTick, 500); }
+      return setTimeout(typeTick, 16);
+    }
+  }
+  typeTick();
+
+  // ---------- rotating quotes ----------
+  const quotes = [
+    {t:"“The fox knows many things, but the hedgehog knows one big thing.”", s:"— Archilochus"},
+    {t:"“The quietest people have the loudest minds.”", s:"— Unknown"},
+    {t:"“We are all in the gutter, but some of us are looking at the stars.”", s:"— Oscar Wilde"},
+    {t:"“What is hidden is not gone. It is only waiting.”", s:"— Field notes"},
+    {t:"“The cunning fox is never caught twice in the same snare.”", s:"— Old proverb"},
+    {t:"“I build in the dark. The work speaks in the light.”", s:"— Mehrab"}
+  ];
+  const box = document.getElementById('quote-box');
+  const qEl = document.getElementById('quote');
+  const sEl = document.getElementById('quote-src');
+  let qi = 0;
+  setInterval(()=>{
+    box.classList.add('fading');
+    setTimeout(()=>{
+      qi = (qi + 1) % quotes.length;
+      qEl.textContent = quotes[qi].t;
+      sEl.textContent = quotes[qi].s;
+      box.classList.remove('fading');
+    }, 600);
+  }, 7000);
+
+  // ---------- drifting embers ----------
+  const canvas = document.getElementById('embers');
+  const ctx = canvas.getContext('2d');
+  let W, H, parts = [];
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  const N = Math.min(40, Math.floor(window.innerWidth / 24));
+  for(let i = 0; i < N; i++){
+    parts.push({
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.6 + .4,
+      vx: (Math.random()-.5)*.12,
+      vy: -(Math.random()*.25 + .08),
+      a: Math.random()*.5 + .1,
+      hue: Math.random() < .7 ? '217,123,43' : '232,228,216'
+    });
+  }
+  (function loop(){
+    ctx.clearRect(0, 0, W, H);
+    for(const p of parts){
+      p.x += p.vx; p.y += p.vy;
+      if(p.y < -4){ p.y = H + 4; p.x = Math.random()*W; }
+      if(p.x < -4) p.x = W + 4;
+      if(p.x > W + 4) p.x = -4;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${p.hue},${p.a})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(loop);
+  })();
+</script>
+</body>
+</html>
